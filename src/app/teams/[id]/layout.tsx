@@ -1,14 +1,20 @@
-import { useRouter } from 'next/router'
 import React from 'react'
+
+type Props = {
+  children: React.ReactNode
+  params: {
+    id: string
+  }
+}
 
 type Team = {
   name: string
   score: number
-  _uid: string
+  id: string
 }
 
-export default async function TeamIdLayout({ children }: { children: React.ReactNode }) {
-  const res = await fetch('/api/teams')
+const TeamIdLayout = async ({ children, params: { id } }: Props) => {
+  const res = await fetch('http://localhost:3002/teams')
 
   if (!res.ok) {
     throw new Error('Error fetching data!')
@@ -16,23 +22,20 @@ export default async function TeamIdLayout({ children }: { children: React.React
 
   const data: Team[] = await res.json()
 
-  const {
-    query: { id },
-  } = useRouter()
-
   let teamString = 'Team not found!'
 
-  const favoriteTeam = data.find(team => team._uid === id)
+  const favoriteTeam = data.find((team) => String(team.id) === id)
 
-  if(favoriteTeam) {
+  if (favoriteTeam) {
     teamString = `Go Team ${favoriteTeam.name}`
   }
 
   return (
-    <>
+    <div>
       <h1>{teamString}</h1>
       <div>{children}</div>
-    </>
+    </div>
   )
 }
 
+export default TeamIdLayout

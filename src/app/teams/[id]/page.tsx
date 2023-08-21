@@ -1,6 +1,3 @@
-import { useRouter } from 'next/router'
-import React from 'react'
-
 type ComplexTeam = {
   name: string
   score: number
@@ -8,12 +5,8 @@ type ComplexTeam = {
   _uid: string
 }
 
-export default async function TeamIdPage() {
-  const {
-    query: { id },
-  } = useRouter()
-
-  const res = await fetch(`/api/teams/${id}`)
+const TeamIdPage = async ({ params: { id } }: { params: { id: string } }) => {
+  const res = await fetch(`http://localhost:3002/teams/${id}`)
 
   if (!res.ok) {
     throw new Error('Error fetching data!')
@@ -22,9 +15,10 @@ export default async function TeamIdPage() {
   const team: ComplexTeam = await res.json()
 
   return (
-    <p>
-      {team.name} has played {team.matchData.length} games!
-    </p>
+    <h2>
+      {team.name} has played {team.matchData.length} game{team.matchData.length > 1 && 's'}!
+    </h2>
   )
 }
 
+export default TeamIdPage

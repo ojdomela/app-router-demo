@@ -1,31 +1,36 @@
+import { AlignCenter } from '@/components/align-center'
+import Sidebar from '@/components/sidebar'
+import Link from 'next/link'
 import React from 'react'
 
 type Team = {
-    name: string
-    score: number
-    _uid: string
+  name: string
+  score: number
+  id: string
 }
 
-export default async function TeamsLayout({ children }: { children: React.ReactNode }) {
-  const res = await fetch('/api/teams')
+const TeamsLayout = async ({ children }: { children: React.ReactNode }) => {
+  const res = await fetch('http://localhost:3002/teams')
 
-  if(!res.ok) {
-    throw new Error('Error fetching data!')
+  if (!res.ok) {
+    throw new Error('Error fetching teams data!')
   }
 
   const data: Team[] = await res.json()
 
   return (
-    <>
-      <aside>
-        {{ ...data }
+    <AlignCenter>
+      <Sidebar>
+        {data
           .sort((a, b) => a.score - b.score)
           .map((item) => (
-            <p key={item._uid}>{item.name}</p>
+            <p key={item.id}>{item.name} has scored {item.score} points</p>
           ))}
-      </aside>
-      <div>{children}</div>
-    </>
+        <Link href="/teams/new">Add a team!</Link>
+      </Sidebar>
+      {children}
+    </AlignCenter>
   )
 }
 
+export default TeamsLayout
