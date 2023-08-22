@@ -9,6 +9,15 @@ type TeamData = {
 
 type Params = { params: { id: string } }
 
+/**
+ * generateMetadata runs sequentially before the rest of the page is loaded
+ * As opposed to concurrently
+ * In order to load the <head> info before data that it references is loaded
+ * 
+ * The issue with this approach is that loading the metadata does not call loading.tsx
+ * Remove the fetch call (or all of the metadata) and watch the spinners re-appear
+ */
+
 export async function generateMetadata({ params: { id } }: Params): Promise<Metadata> {
   try {
     const res = await fetch(`http://localhost:3002/teams/${id}`)
