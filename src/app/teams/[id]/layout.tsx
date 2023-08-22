@@ -17,6 +17,7 @@ const TeamIdLayout = async ({ children, params: { id } }: Props) => {
   const res = await fetch('http://localhost:3002/teams')
 
   if (!res.ok) {
+    console.error("Response", res)
     throw new Error('Error fetching data!')
   }
 

@@ -4,7 +4,7 @@ export const THEME = {
   COLOR: {
     WHITE: '#fff',
     BLACK: '#000',
-    BACKGROUND: '#666',
+    BACKGROUND: '#00DDCB',
   },
 }
 

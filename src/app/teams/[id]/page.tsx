@@ -1,18 +1,41 @@
-type ComplexTeam = {
+import { Metadata } from 'next'
+
+type TeamData = {
   name: string
   score: number
   matchData: unknown[]
   _uid: string
 }
 
-const TeamIdPage = async ({ params: { id } }: { params: { id: string } }) => {
+type Params = { params: { id: string } }
+
+export async function generateMetadata({ params: { id } }: Params): Promise<Metadata> {
+  try {
+    const res = await fetch(`http://localhost:3002/teams/${id}`)
+    if (!res.ok) {
+      throw new Error('Error fetching data!')
+    }
+    const team: TeamData = await res.json()
+  
+    return {
+      title: team.name,
+    }
+
+  } catch (err) {
+    return {
+      title: 'Error title!'
+    }
+  }
+}
+
+const TeamIdPage = async ({ params: { id } }: Params) => {
   const res = await fetch(`http://localhost:3002/teams/${id}`)
 
   if (!res.ok) {
     throw new Error('Error fetching data!')
   }
 
-  const team: ComplexTeam = await res.json()
+  const team: TeamData = await res.json()
 
   return (
     <h2>

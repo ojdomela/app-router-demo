@@ -41,22 +41,20 @@ app.use((req, res, next) => {
   next()
 })
 
-app.get('/teams', (req, res) => {
-  sleep(2000)
+app.get('/teams', async (req, res) => {
+  await sleep(1500)
   res.json(teams)
 })
 
-app.get('/teams/:id', (req, res) => {
+app.get('/teams/:id', async (req, res) => {
   const id = req.params.id
   const team = teams.find((team) => String(team.id) === id)
   const matchData = getMatchData()
 
-  console.log("id", id)
-  console.log("team", teams)
   if (!team) {
     return res.sendStatus(404)
   }
-  sleep(5000)
+  await sleep(3000)
   res.json({ ...team, matchData })
 })
 
