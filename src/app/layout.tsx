@@ -6,7 +6,10 @@ import { Inter } from 'next/font/google'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata = {
-  title: 'App Router Demo',
+  title: {
+    default: 'App Router Demo',
+    template: '%s | App Router Demo'
+  }
 }
 
 const RootLayout = ({ children }: { children: React.ReactNode }) => {

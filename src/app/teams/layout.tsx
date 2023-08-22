@@ -10,6 +10,10 @@ type Team = {
   id: string
 }
 
+export const metadata = {
+  title: 'Teams'
+}
+
 const TeamsLayout = async ({ children }: { children: React.ReactNode }) => {
   const res = await fetch('http://localhost:3002/teams')
   
@@ -22,8 +26,16 @@ const TeamsLayout = async ({ children }: { children: React.ReactNode }) => {
   return (
     <SidebarLayout>
       <Sidebar>
-        {data
-          .sort((a, b) => a.score - b.score)
+        {[...data]
+          .sort((a, b) => {
+            if (a.name < b.name) {
+              return -1
+            }
+            if (b.name < a.name) {
+              return 1
+            }
+            return 0
+          })
           .map((item) => (
             <Paragraph key={item.id}><b>{item.name}</b> has scored <b>{item.score}</b> points</Paragraph>
           ))}

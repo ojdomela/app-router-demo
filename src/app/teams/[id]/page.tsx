@@ -18,7 +18,7 @@ export async function generateMetadata({ params: { id } }: Params): Promise<Meta
     const team: TeamData = await res.json()
   
     return {
-      title: team.name,
+      title: `Team ${team.name}`,
     }
 
   } catch (err) {
